@@ -13,6 +13,8 @@ def prepare_board():
 	global board
 	board = [[0]*cols]*rows
 
+	# spawn two random tiles
+
 
 def print_board():
 	for i in range(0, rows):
@@ -28,8 +30,22 @@ def print_board():
 # Process a keypress
 def do_move(c):
 	# Do some stuff here
-	print(c)
+	
+	if (c == 'w'):
+		# up
+		print(c)
+	
+	if (c == 'a'):
+		# left
+		print(c)
 
+	if (c == 's'):
+		# down
+		print(c)
+
+	if (c == 'd'):
+		# right
+		print(c)
 
 
 
@@ -57,11 +73,13 @@ def game():
 		# Do stuff with c
 		do_move(c)
 
-
-
-		if c == 'a':
+		if c == 'l':
 			lost = True
 	
+
+
+	os.system('clear') # clear screen
+	print_board()
 	print("You lost!")
 
 
