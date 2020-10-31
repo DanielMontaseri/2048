@@ -1,6 +1,8 @@
 import os
 import sys
 
+
+# Global variables
 cols = 4
 rows = 4
 board = [[0]*cols]*rows
@@ -10,6 +12,15 @@ lost = False
 def prepare_board():
 	global board
 	board = [[0]*cols]*rows
+
+
+def print_board():
+	for i in range(0, rows):
+		for j in range(0, cols):
+			b = str(board[i][j])
+			b = b.ljust(5)
+			print(b, end='')
+		print()
 
 
 #def for random spawn, win condition, 
@@ -30,6 +41,11 @@ def game():
 	prepare_board()
 	
 	while (not lost):
+		
+		os.system('clear') # clear screen
+		print_board()
+
+
 		# Read in keypress using os magic
 		# Don't edit --------------------
 		os.system("stty raw -echo")		
@@ -40,6 +56,8 @@ def game():
 
 		# Do stuff with c
 		do_move(c)
+
+
 
 		if c == 'a':
 			lost = True
