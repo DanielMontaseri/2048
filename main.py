@@ -73,7 +73,7 @@ def game():
 		# Do stuff with c
 		do_move(c)
 
-		if c == 'l':
+		if c == 'l': # For debugging
 			lost = True
 	
 
@@ -81,6 +81,11 @@ def game():
 	os.system('clear') # clear screen
 	print_board()
 	print("You lost!")
+
+	print("Press any key to continue ...")
+	os.system("stty raw -echo")		
+	c = sys.stdin.read(1)
+	os.system("stty -raw echo")
 
 
 # Main game loop
