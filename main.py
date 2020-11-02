@@ -2,6 +2,14 @@ import os
 import sys
 
 
+'''
+TODO:
+ - Implement moves
+ - Rewrite the interface to look nicer
+ - High scores using Repl.it Database?
+'''
+
+
 # Global variables
 cols = 4
 rows = 4
@@ -16,11 +24,13 @@ def prepare_board():
 	# spawn two random tiles
 
 
+# Print the board
+# Maybe rewrite to look nicer?
 def print_board():
 	for i in range(0, rows):
 		for j in range(0, cols):
 			b = str(board[i][j])
-			b = b.ljust(5)
+			b = b.ljust(5) # Pad with spaces
 			print(b, end='')
 		print()
 
@@ -76,7 +86,6 @@ def game():
 		if c == 'l': # For debugging
 			lost = True
 	
-
 
 	os.system('clear') # clear screen
 	print_board()
