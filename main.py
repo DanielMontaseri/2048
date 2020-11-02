@@ -59,15 +59,28 @@ def prepare_board():
 
 
 # Print the board
-# Maybe rewrite to look nicer?
 def print_board():
-	print("Score: " + str(score))
+	print('''
+      ___   ____  __ __  ____ 
+     |__ \ / __ \/ // / ( __ )
+     __/ // / / / // /_/ __  |
+    / __// /_/ /__  __/ /_/ / 
+   /____/\____/  /_/  \____/  
+	''')
+	print("BY LADUE HS CS CLUB" + ("SCORE: " + str(score) + '\n').rjust(15))
 	for i in range(0, rows):
+		print("---------------------------------")
+		print("|       |       |       |       |")
 		for j in range(0, cols):
 			b = str(board[i][j])
-			b = b.ljust(5) # Add spaces to the end until b has length 5
-			print(b, end='')
-		print()
+			b = b.rjust(4) # Add spaces to the beginning until b has length 5
+			print("|" + b, end='   ')
+		print("|")
+		print("|       |       |       |       |")
+	print("---------------------------------\n")
+
+	print("CONTROLS:       W  ")
+	print("              A S D")
 
 
 
@@ -114,7 +127,7 @@ def do_move(c):
 					if len(l) > 0 and board[j][i] == l[-1]:
 						l.pop()
 						l.append(-2*board[j][i])
-						score += board[j][i]
+						score += 2*board[j][i]
 					else:
 						l.append(board[j][i])
 					board[j][i] = 0 # clear cell
@@ -150,7 +163,7 @@ def do_move(c):
 					if len(l) > 0 and board[i][j] == l[-1]:
 						l.pop()
 						l.append(-2*board[i][j])
-						score += board[i][j]
+						score += 2*board[i][j]
 					else:
 						l.append(board[i][j])
 					board[i][j] = 0 # clear cell
@@ -198,7 +211,7 @@ def do_move(c):
 					if len(l) > 0 and board[j][i] == l[-1]:
 						l.pop()
 						l.append(-2*board[j][i])
-						score += board[j][i]
+						score += 2*board[j][i]
 					else:
 						l.append(board[j][i])
 					board[j][i] = 0 # clear cell
@@ -217,7 +230,7 @@ def do_move(c):
 					if len(l) > 0 and board[i][j] == l[-1]:
 						l.pop()
 						l.append(-2*board[i][j])
-						score += board[i][j]
+						score += 2*board[i][j]
 					else:
 						l.append(board[i][j])
 					board[i][j] = 0 # clear cell
