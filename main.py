@@ -7,7 +7,8 @@ import random
 '''
 TODO:
  - Implement moves
-  	-Move & Merge
+	- We have a reference implementation
+	- You can also fix/write your own
 
  - Score
  
@@ -121,8 +122,8 @@ def do_move(c):
 			# refill with list l
 			for j in range(0, len(l)):
 				board[j][i] = abs(l[j])
-#[[board[3-j][i] for j in range(4)]for i in range(4)] counterclockwise
-#[[board[j][3-i] for j in range(4)]for i in range(4)] clockwise
+#[[board[rows-1-j][i] for j in range(rows)]for i in range(cols)] counterclockwise
+#[[board[j][cols-1-i] for j in range(4)]for i in range(4)] clockwise
 
 	elif (c == 'a'):
 		# left working [2,2,2,0]=>[4,2,0,0], [2,2,2,2]=>[4,4,0,0]
@@ -191,7 +192,7 @@ def do_move(c):
 		'''
 		for i in range(0, cols):
 			l = [] # list to store all nonzero tiles
-			for j in range(0, rows):
+			for j in reversed(range(0, rows)):
 				if board[j][i] > 0:
 					# last tile is the same as current, then merge
 					if len(l) > 0 and board[j][i] == l[-1]:
@@ -204,13 +205,13 @@ def do_move(c):
 			
 			# refill with list l
 			for j in range(0, len(l)):
-				board[rows-len(l)+j][i] = abs(l[j])
+				board[rows-j-1][i] = abs(l[j])
 
 	elif (c == 'd'):
   	   	# right
 		for i in range(0, rows):
 			l = [] # list to store all nonzero tiles
-			for j in range(0, cols):
+			for j in reversed(range(0, cols)):
 				if board[i][j] > 0:
 					# last tile is the same as current, then merge
 					if len(l) > 0 and board[i][j] == l[-1]:
@@ -223,7 +224,7 @@ def do_move(c):
 			
 			# refill with list l
 			for j in range(0, len(l)):
-				board[i][cols-len(l)+j] = abs(l[j])
+				board[i][cols-j-1] = abs(l[j])
 
 	else:
 		return
