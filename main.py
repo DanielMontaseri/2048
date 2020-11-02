@@ -15,8 +15,8 @@ TODO:
  - Rewrite the interface to look nicer
 
  - High scores using Repl.it Database?
-  	 or JSON(possibly easier(just file writing))
-  	 can't use JSON because we don't have access to an actual file system
+	   or JSON(possibly easier(just file writing))
+	   can't use JSON because we don't have access to an actual file system
 	can use JSON because repl can write and save to a file(try it)
    
 '''
@@ -50,12 +50,12 @@ def spawn_random():
 
 # get the board ready
 def prepare_board():
-  	global board
-  	board = [[0]*cols for i in range(rows)]
+	global board
+	board = [[0]*cols for i in range(rows)]
 
-  	# spawn two random tiles for starting board
-  	spawn_random()
-  	spawn_random()
+	# spawn two random tiles for starting board
+	spawn_random()
+	spawn_random()
 
 
 # Print the board
@@ -168,7 +168,7 @@ def do_move(c):
 		for i in range(0, rows):
 			for j in range(0, cols):
 				columns[i][cols-j] = board[j][i]
-    #now you can treat as if 1 column is a 1d array in columns[][]shifting/merging to the left
+	#now you can treat as if 1 column is a 1d array in columns[][]shifting/merging to the left
 		#collapse:
 		for i in range(0, columns):
 			if (columns[i].contains(0)):
@@ -185,7 +185,7 @@ def do_move(c):
 					columns[i].pop(j+1) 
 					columns[i].append(0)
 					j+=2
-    	#put back into board
+		#put back into board
 		for i in range(0, rows):
 			for j in range(0, cols):
 				board[j][i] = columns[i][cols-j]
@@ -208,7 +208,7 @@ def do_move(c):
 				board[rows-j-1][i] = abs(l[j])
 
 	elif (c == 'd'):
-  	   	# right
+		# right
 		for i in range(0, rows):
 			l = [] # list to store all nonzero tiles
 			for j in reversed(range(0, cols)):
@@ -237,15 +237,24 @@ def do_move(c):
 
 
 def check_lost():
-  #you still need to check if anything is merge-able
-  #it might be best if we have a check mergeability function. check every row and column to see if 2 consecutive elements match.
-  	for i in range(0, rows):
-  		for j in range(0, cols):
-  			if (board[i][j] == 0):
-  	  			return False
-			
-  	return True
+	#you still need to check if anything is merge-able
+	#it might be best if we have a check mergeability function. check every row and column to see if 2 consecutive elements match.
+	for i in range(0, rows):
+		for j in range(0, cols):
+			if board[i][j] == 0:
+				return False
+	
+	for i in range(0, rows):
+		for j in range(0, cols-1):
+			if board[i][j] == board[i][j+1]:
+				return False
 
+	for i in range(0, rows-1):
+		for j in range(0, cols):
+			if board[i][j] == board[i+1][j]:
+				return False
+
+	return True
 
 # Run the game until you lose
 def game():
@@ -274,7 +283,7 @@ def game():
 		
 
 		if c == 'l': # For debugging
-  	  		lost = True
+				lost = True
 
 	os.system('clear') # clear screen
 	print_board()
@@ -286,7 +295,7 @@ def game():
 	c = sys.stdin.read(1)
 	os.system("stty -raw echo")
 
-  	  
+		
 # Main game loop
 while (True):
 	game() # run the game
