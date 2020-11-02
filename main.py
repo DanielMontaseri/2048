@@ -60,6 +60,7 @@ def prepare_board():
 # Print the board
 # Maybe rewrite to look nicer?
 def print_board():
+	print("Score: " + str(score))
 	for i in range(0, rows):
 		for j in range(0, cols):
 			b = str(board[i][j])
@@ -73,12 +74,14 @@ def print_board():
 # hopefully it doesn't break if input doesn't change the board (detect repeat? or no)
 # Process a keypress
 def do_move(c):
-	global lost, score
+	global lost
+	global score
 	# Keypress listener/handler
 
 	#Assuming valid input
 	if (c == 'w'):
 		# Up 
+		'''
 		for i in range(0, rows):
 			for j in range(0, cols):
 				if board[i][j] != 0:
@@ -89,11 +92,11 @@ def do_move(c):
 							board[i][j] = 0
 							break
 						elif k == 0 and board[0][j] == current:
-							board[0][j] *= 2
+							board[0][j] = current * 2
 							board[i][j] = 0
 							break
 						elif board[k][j] == current:
-							board[k][j] *= 2
+							board[k][j] = current * 2
 							board[i][j] = 0
 							break
 						else:
@@ -101,14 +104,29 @@ def do_move(c):
 							board[i][j] = 0
 							break
 		# print(c)
-			"""
-			rotate counterclockwise
-      left
-      rotate clockwise
-			"""
+		'''
+		for i in range(0, cols):
+			l = [] # list to store all nonzero tiles
+			for j in range(0, rows):
+				if board[j][i] > 0:
+					# last tile is the same as current, then merge
+					if len(l) > 0 and board[j][i] == l[-1]:
+						l.pop()
+						l.append(-2*board[j][i])
+						score += board[j][i]
+					else:
+						l.append(board[j][i])
+					board[j][i] = 0 # clear cell
+			
+			# refill with list l
+			for j in range(0, len(l)):
+				board[j][i] = abs(l[j])
+#[[board[3-j][i] for j in range(4)]for i in range(4)] counterclockwise
+#[[board[j][3-i] for j in range(4)]for i in range(4)] clockwise
 
 	elif (c == 'a'):
 		# left working [2,2,2,0]=>[4,2,0,0], [2,2,2,2]=>[4,4,0,0]
+		'''
 		for i in range(0, rows):
 			for j in range(0, cols-1):
 				for k in range(j+1, cols):
@@ -122,11 +140,29 @@ def do_move(c):
 						break
 					#collapse left [4,0,4,0]=>[4,4,0,0]
 			board[i]=[j for j in board[i] if j]+[0]*board[i].count(0)
+		'''
+		for i in range(0, rows):
+			l = [] # list to store all nonzero tiles
+			for j in range(0, cols):
+				if board[i][j] > 0:
+					# last tile is the same as current, then merge
+					if len(l) > 0 and board[i][j] == l[-1]:
+						l.pop()
+						l.append(-2*board[i][j])
+						score += board[i][j]
+					else:
+						l.append(board[i][j])
+					board[i][j] = 0 # clear cell
+			
+			# refill with list l
+			for j in range(0, len(l)):
+				board[i][j] = abs(l[j])
 
 	elif (c == 's'):
 		# down
 		#initialize board - switch rows and columns
 		
+		'''
 		columns = [[0]*cols for i in range(rows)]
 		for i in range(0, rows):
 			for j in range(0, cols):
@@ -152,7 +188,23 @@ def do_move(c):
 		for i in range(0, rows):
 			for j in range(0, cols):
 				board[j][i] = columns[i][cols-j]
-
+		'''
+		for i in range(0, cols):
+			l = [] # list to store all nonzero tiles
+			for j in range(0, rows):
+				if board[j][i] > 0:
+					# last tile is the same as current, then merge
+					if len(l) > 0 and board[j][i] == l[-1]:
+						l.pop()
+						l.append(-2*board[j][i])
+						score += board[j][i]
+					else:
+						l.append(board[j][i])
+					board[j][i] = 0 # clear cell
+			
+			# refill with list l
+			for j in range(0, len(l)):
+				board[rows-len(l)+j][i] = abs(l[j])
 
 	elif (c == 'd'):
   	   	# right
@@ -161,23 +213,20 @@ def do_move(c):
 			for j in range(0, cols):
 				if board[i][j] > 0:
 					# last tile is the same as current, then merge
-					x = board[i][j]
-					while len(l) > 0 and l[-1] == x:
+					if len(l) > 0 and board[i][j] == l[-1]:
 						l.pop()
-						x *= 2
-						score += x
-					l.append(x)
-			
-			# clear row
-			for j in range(0, cols):
-				board[i][j] = 0
+						l.append(-2*board[i][j])
+						score += board[i][j]
+					else:
+						l.append(board[i][j])
+					board[i][j] = 0 # clear cell
 			
 			# refill with list l
 			for j in range(0, len(l)):
-				board[i][cols-len(l)+j] = l[j]
+				board[i][cols-len(l)+j] = abs(l[j])
 
 	else:
-		print("invalid move")
+		return
 
 	if check_lost():
 		lost = True
