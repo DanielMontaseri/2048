@@ -3,7 +3,7 @@
 
 ## What is this?
 
-It's 2048, written in Python by the Ladue High School Computer Science Club. It' still in its early stages, so expect bugs!
+It's 2048, written in Python by the Ladue High School Computer Science Club. It's still in its early stages, so expect bugs!
 
 
 ## Getting started
