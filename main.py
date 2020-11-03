@@ -22,7 +22,9 @@ TODO:
 
  - Play the game to find bugs!
 
- - Add restart and quit keys
+ - Add restart keys
+
+ - Add help menu
 
  - High scores using Repl.it Database?
 	   or JSON(possibly easier(just file writing))
@@ -42,6 +44,7 @@ score = 0
 
 
 # spawn a random tile
+# can be rewritten to be more efficient
 def spawn_random():
 	done = False
 	while not done:
@@ -135,9 +138,174 @@ def print_board():
 	print("              A S D")
 
 
+def merge_up():
+	global score, board
 
-# def for random spawn, win condition, 
-# hopefully it doesn't break if input doesn't change the board (detect repeat? or no)
+	for i in range(0, cols):
+		l = [] # list to store all nonzero tiles
+		for j in range(0, rows):
+			if board[j][i] > 0:
+				# last tile is the same as current, then merge
+				if len(l) > 0 and board[j][i] == l[-1]:
+					l.pop()
+					l.append(-2*board[j][i])
+					score += 2*board[j][i]
+				else:
+					l.append(board[j][i])
+				board[j][i] = 0 # clear cell
+		
+		# refill with list l
+		for j in range(0, len(l)):
+			board[j][i] = abs(l[j])
+
+
+def merge_up_alt():
+	global score, board
+
+	for i in range(0, rows):
+		for j in range(0, cols):
+			if board[i][j] != 0:
+				current = board[i][j]
+				for k in range(i - 1, -1, -1):
+					if k == 0 and board[0][j] == 0:
+						board[0][j] = current
+						board[i][j] = 0
+						break
+					elif k == 0 and board[0][j] == current:
+						board[0][j] = current * 2
+						board[i][j] = 0
+						break
+					elif board[k][j] == current:
+						board[k][j] = current * 2
+						board[i][j] = 0
+						break
+					else:
+						board[k + 1][j] = current
+						board[i][j] = 0
+						break
+	# print(c)
+	#[[board[rows-1-j][i] for j in range(rows)]for i in range(cols)] counterclockwise
+	#[[board[j][cols-1-i] for j in range(4)]for i in range(4)] clockwise
+
+
+def merge_left():
+	global score, board
+
+	for i in range(0, rows):
+		l = [] # list to store all nonzero tiles
+		for j in range(0, cols):
+			if board[i][j] > 0:
+				# last tile is the same as current, then merge
+				if len(l) > 0 and board[i][j] == l[-1]:
+					l.pop()
+					l.append(-2*board[i][j])
+					score += 2*board[i][j]
+				else:
+					l.append(board[i][j])
+				board[i][j] = 0 # clear cell
+		
+		# refill with list l
+		for j in range(0, len(l)):
+			board[i][j] = abs(l[j])
+
+
+def merge_left_alt():
+	# left working [2,2,2,0]=>[4,2,0,0], [2,2,2,2]=>[4,4,0,0]
+	global score, board
+	for i in range(0, rows):
+		for j in range(0, cols-1):
+			for k in range(j+1, cols):
+				if board[i][j]==0 or board[i][k]==0:
+					continue
+				if board[i][j]==board[i][k]: 
+					board[i][j]*=2
+					board[i][k]=0
+					score+=board[i][j]
+				else:
+					break
+				#collapse left [4,0,4,0]=>[4,4,0,0]
+		board[i]=[j for j in board[i] if j]+[0]*board[i].count(0)
+
+
+def merge_down():
+	global score, board
+	
+	for i in range(0, cols):
+		l = [] # list to store all nonzero tiles
+		for j in reversed(range(0, rows)):
+			if board[j][i] > 0:
+				# last tile is the same as current, then merge
+				if len(l) > 0 and board[j][i] == l[-1]:
+					l.pop()
+					l.append(-2*board[j][i])
+					score += 2*board[j][i]
+				else:
+					l.append(board[j][i])
+				board[j][i] = 0 # clear cell
+		
+		# refill with list l
+		for j in range(0, len(l)):
+			board[rows-j-1][i] = abs(l[j])
+
+
+def merge_down_alt():
+	global score, board
+
+	# down
+	#initialize board - switch rows and columns
+	columns = [[0]*cols for i in range(rows)]
+	for i in range(0, rows):
+		for j in range(0, cols):
+			columns[i][cols-j] = board[j][i]
+	#now you can treat as if 1 column is a 1d array in columns[][]shifting/merging to the left
+	#collapse:
+	for i in range(0, columns):
+		if (columns[i].contains(0)):
+			count = columns[i].count(0)
+			columns[i].remove(0)
+			for j in range(0,count):
+				columns[i].append(0)
+
+	#merge Process
+	for i in range(0,cols):
+		for j in range(0,cols-1):
+			if(columns[i][j] == columns[i][j+1] and columns[i][j]!=0):
+				columns[i][j]*=2
+				columns[i].pop(j+1) 
+				columns[i].append(0)
+				j+=2
+	#put back into board
+	for i in range(0, rows):
+		for j in range(0, cols):
+			board[j][i] = columns[i][cols-j]
+
+
+def merge_right():
+	global score, board
+
+	for i in range(0, rows):
+		l = [] # list to store all nonzero tiles
+		for j in reversed(range(0, cols)):
+			if board[i][j] > 0:
+				# last tile is the same as current, then merge
+				if len(l) > 0 and board[i][j] == l[-1]:
+					l.pop()
+					l.append(-2*board[i][j])
+					score += 2*board[i][j]
+				else:
+					l.append(board[i][j])
+				board[i][j] = 0 # clear cell
+		
+		# refill with list l
+		for j in range(0, len(l)):
+			board[i][cols-j-1] = abs(l[j])
+
+
+def show_help():
+	os.system('clear') 
+	# Print help
+
+
 # Process a keypress
 def do_move(c):
 	global lost
@@ -146,150 +314,26 @@ def do_move(c):
 
 	#Assuming valid input
 	if (c == 'w'):
-		# Up 
-		'''
-		for i in range(0, rows):
-			for j in range(0, cols):
-				if board[i][j] != 0:
-					current = board[i][j]
-					for k in range(i - 1, -1, -1):
-						if k == 0 and board[0][j] == 0:
-							board[0][j] = current
-							board[i][j] = 0
-							break
-						elif k == 0 and board[0][j] == current:
-							board[0][j] = current * 2
-							board[i][j] = 0
-							break
-						elif board[k][j] == current:
-							board[k][j] = current * 2
-							board[i][j] = 0
-							break
-						else:
-							board[k + 1][j] = current
-							board[i][j] = 0
-							break
-		# print(c)
-		'''
-		for i in range(0, cols):
-			l = [] # list to store all nonzero tiles
-			for j in range(0, rows):
-				if board[j][i] > 0:
-					# last tile is the same as current, then merge
-					if len(l) > 0 and board[j][i] == l[-1]:
-						l.pop()
-						l.append(-2*board[j][i])
-						score += 2*board[j][i]
-					else:
-						l.append(board[j][i])
-					board[j][i] = 0 # clear cell
-			
-			# refill with list l
-			for j in range(0, len(l)):
-				board[j][i] = abs(l[j])
-#[[board[rows-1-j][i] for j in range(rows)]for i in range(cols)] counterclockwise
-#[[board[j][cols-1-i] for j in range(4)]for i in range(4)] clockwise
+		merge_up()
 
 	elif (c == 'a'):
-		# left working [2,2,2,0]=>[4,2,0,0], [2,2,2,2]=>[4,4,0,0]
-		'''
-		for i in range(0, rows):
-			for j in range(0, cols-1):
-				for k in range(j+1, cols):
-					if board[i][j]==0 or board[i][k]==0:
-						continue
-					if board[i][j]==board[i][k]: 
-						board[i][j]*=2
-						board[i][k]=0
-						score+=board[i][j]
-					else:
-						break
-					#collapse left [4,0,4,0]=>[4,4,0,0]
-			board[i]=[j for j in board[i] if j]+[0]*board[i].count(0)
-		'''
-		for i in range(0, rows):
-			l = [] # list to store all nonzero tiles
-			for j in range(0, cols):
-				if board[i][j] > 0:
-					# last tile is the same as current, then merge
-					if len(l) > 0 and board[i][j] == l[-1]:
-						l.pop()
-						l.append(-2*board[i][j])
-						score += 2*board[i][j]
-					else:
-						l.append(board[i][j])
-					board[i][j] = 0 # clear cell
-			
-			# refill with list l
-			for j in range(0, len(l)):
-				board[i][j] = abs(l[j])
+		merge_left()
 
 	elif (c == 's'):
-		# down
-		#initialize board - switch rows and columns
-		
-		'''
-		columns = [[0]*cols for i in range(rows)]
-		for i in range(0, rows):
-			for j in range(0, cols):
-				columns[i][cols-j] = board[j][i]
-	#now you can treat as if 1 column is a 1d array in columns[][]shifting/merging to the left
-		#collapse:
-		for i in range(0, columns):
-			if (columns[i].contains(0)):
-				count = columns[i].count(0)
-				columns[i].remove(0)
-				for j in range(0,count):
-					columns[i].append(0)
-
-		#merge Process
-		for i in range(0,cols):
-			for j in range(0,cols-1):
-				if(columns[i][j] == columns[i][j+1] and columns[i][j]!=0):
-					columns[i][j]*=2
-					columns[i].pop(j+1) 
-					columns[i].append(0)
-					j+=2
-		#put back into board
-		for i in range(0, rows):
-			for j in range(0, cols):
-				board[j][i] = columns[i][cols-j]
-		'''
-		for i in range(0, cols):
-			l = [] # list to store all nonzero tiles
-			for j in reversed(range(0, rows)):
-				if board[j][i] > 0:
-					# last tile is the same as current, then merge
-					if len(l) > 0 and board[j][i] == l[-1]:
-						l.pop()
-						l.append(-2*board[j][i])
-						score += 2*board[j][i]
-					else:
-						l.append(board[j][i])
-					board[j][i] = 0 # clear cell
-			
-			# refill with list l
-			for j in range(0, len(l)):
-				board[rows-j-1][i] = abs(l[j])
+		merge_down()
 
 	elif (c == 'd'):
-		# right
-		for i in range(0, rows):
-			l = [] # list to store all nonzero tiles
-			for j in reversed(range(0, cols)):
-				if board[i][j] > 0:
-					# last tile is the same as current, then merge
-					if len(l) > 0 and board[i][j] == l[-1]:
-						l.pop()
-						l.append(-2*board[i][j])
-						score += 2*board[i][j]
-					else:
-						l.append(board[i][j])
-					board[i][j] = 0 # clear cell
-			
-			# refill with list l
-			for j in range(0, len(l)):
-				board[i][cols-j-1] = abs(l[j])
+		merge_right()
+
+	elif (c == 'h'):
+		show_help()
+
+	elif (c == 'l'):
+		lost = True # For debugging
+		return
+
+	elif (c == 'q'):
+		exit()
 
 	else:
 		return
@@ -334,11 +378,8 @@ def game():
 		# -------------------------------
 		
 		# Do a move
-		do_move(c) 
-		
-
-		if c == 'l': # For debugging
-				lost = True
+		do_move(c)
+				
 
 	os.system('clear') # clear screen
 	print_board()
