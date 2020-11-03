@@ -129,7 +129,7 @@ def print_board():
 	print("-", end='')
 	for j in range(0, cols):
 		print("--------", end='')
-	print()
+	print('\n')
 
 	print("CONTROLS:       W  ")
 	print("              A S D")
