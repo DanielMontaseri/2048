@@ -22,6 +22,8 @@ TODO:
 
  - Play the game to find bugs!
 
+ - Add restart and quit keys
+
  - High scores using Repl.it Database?
 	   or JSON(possibly easier(just file writing))
 	   can't use JSON because we don't have access to an actual file system
