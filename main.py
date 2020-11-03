@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+import termcolor
 
 
 #INDENTATION ------> TABS <----------
@@ -12,7 +13,7 @@ TODO:
 
  - Score
  
- - Rewrite the interface to look nicer
+ - Fix check_lost()
 
  - High scores using Repl.it Database?
 	   or JSON(possibly easier(just file writing))
@@ -58,6 +59,24 @@ def prepare_board():
 	spawn_random()
 
 
+# color of each tile
+def get_color(x):
+	if x == 2:
+		return "on_grey"
+	elif x == 4:
+		return "on_red"
+	elif x == 8:
+		return "on_green"
+	elif x == 16:
+		return "on_yellow"
+	elif x == 32:
+		return "on_blue"
+	elif x == 64:
+		return "on_magenta"
+	else:
+		return "on_cyan"
+
+
 # Print the board
 def print_board():
 	print('''
@@ -69,15 +88,39 @@ def print_board():
 	''')
 	print("BY LADUE HS CS CLUB" + ("SCORE: " + str(score) + '\n').rjust(15))
 	for i in range(0, rows):
-		print("---------------------------------")
-		print("|       |       |       |       |")
+		print("-", end='')
 		for j in range(0, cols):
-			b = str(board[i][j])
-			b = b.rjust(4) # Add spaces to the beginning until b has length 5
-			print("|" + b, end='   ')
-		print("|")
-		print("|       |       |       |       |")
-	print("---------------------------------\n")
+			print("--------", end='')
+		print()
+		
+		print("|", end='')
+		for j in range(0, cols):
+			if (board[i][j] > 0):
+				print(termcolor.colored("       ", "white", get_color(board[i][j])), end='|')
+			else:
+				print("       ", end='|')
+		print()
+		
+		print("|", end='')
+		for j in range(0, cols):
+			if (board[i][j] > 0):
+				print(termcolor.colored(str(board[i][j]).center(7), "white", get_color(board[i][j])), end='|')
+			else:
+				print("       ", end='|')
+		print()
+		
+		print("|", end='')
+		for j in range(0, cols):
+			if (board[i][j] > 0):
+				print(termcolor.colored("       ", "white", get_color(board[i][j])), end='|')
+			else:
+				print("       ", end='|')
+		print()
+
+	print("-", end='')
+	for j in range(0, cols):
+		print("--------", end='')
+	print()
 
 	print("CONTROLS:       W  ")
 	print("              A S D")
@@ -255,16 +298,6 @@ def check_lost():
 	for i in range(0, rows):
 		for j in range(0, cols):
 			if board[i][j] == 0:
-				return False
-	
-	for i in range(0, rows):
-		for j in range(0, cols-1):
-			if board[i][j] == board[i][j+1]:
-				return False
-
-	for i in range(0, rows-1):
-		for j in range(0, cols):
-			if board[i][j] == board[i+1][j]:
 				return False
 
 	return True
