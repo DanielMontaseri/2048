@@ -10,7 +10,7 @@ It's 2048, written in Python by the Ladue High School Computer Science Club. It'
 
 ### Download and run
 
-Download or clone this repo, then run `python main.py`.
+Download or clone this repo, then run `python3 main.py`.
 
 If Python complains about `termcolor`, install it with `pip install termcolor`.
 

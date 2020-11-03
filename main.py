@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Imports
 import os
@@ -18,7 +18,7 @@ TODO:
 
  - Add an undo button
 
- - Add colors for tiles above 128
+ - Different colors for tiles instead of repeating?
 
  - Play the game to find bugs!
 
@@ -74,16 +74,26 @@ def prepare_board():
 # color of each tile
 def get_color(x):
 	if x == 2:
-		return "on_grey"
-	elif x == 4:
 		return "on_red"
-	elif x == 8:
+	elif x == 4:
 		return "on_green"
-	elif x == 16:
+	elif x == 8:
 		return "on_yellow"
-	elif x == 32:
+	elif x == 16:
 		return "on_blue"
+	elif x == 32:
+		return "on_magenta"
 	elif x == 64:
+		return "on_cyan"
+	elif x == 128:
+		return "on_red"
+	elif x == 256:
+		return "on_green"
+	elif x == 512:
+		return "on_yellow"
+	elif x == 1024:
+		return "on_blue"
+	elif x == 2048:
 		return "on_magenta"
 	else:
 		return "on_cyan"
@@ -301,6 +311,17 @@ def merge_right():
 			board[i][cols-j-1] = abs(l[j])
 
 
+def check_lost():
+	#you still need to check if anything is merge-able
+	#it might be best if we have a check mergeability function. check every row and column to see if 2 consecutive elements match.
+	for i in range(0, rows):
+		for j in range(0, cols):
+			if board[i][j] == 0:
+				return False
+
+	return True
+
+
 def show_help():
 	os.system('clear') 
 	# Print help
@@ -315,26 +336,18 @@ def do_move(c):
 	#Assuming valid input
 	if (c == 'w'):
 		merge_up()
-
 	elif (c == 'a'):
 		merge_left()
-
 	elif (c == 's'):
 		merge_down()
-
 	elif (c == 'd'):
 		merge_right()
-
 	elif (c == 'h'):
 		show_help()
-
 	elif (c == 'l'):
 		lost = True # For debugging
-		return
-
 	elif (c == 'q'):
 		exit()
-
 	else:
 		return
 
@@ -344,16 +357,6 @@ def do_move(c):
 	if not lost:
 		spawn_random()
 
-
-def check_lost():
-	#you still need to check if anything is merge-able
-	#it might be best if we have a check mergeability function. check every row and column to see if 2 consecutive elements match.
-	for i in range(0, rows):
-		for j in range(0, cols):
-			if board[i][j] == 0:
-				return False
-
-	return True
 
 # Run the game until you lose
 def game():
