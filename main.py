@@ -1,3 +1,6 @@
+#!/usr/bin/python
+
+# Imports
 import os
 import sys
 import random
