@@ -10,10 +10,14 @@ TODO:
  - Implement moves
 	- We have a reference implementation
 	- You can also fix/write your own
-
- - Score
  
  - Fix check_lost()
+
+ - Add an undo button
+
+ - Add colors for tiles above 128
+
+ - Play the game to find bugs!
 
  - High scores using Repl.it Database?
 	   or JSON(possibly easier(just file writing))
