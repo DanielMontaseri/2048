@@ -1,8 +1,9 @@
 PREFIX ?= /usr/local
-DOCDIR ?= $(PREFIX)/share/bpytop/doc
+DOCDIR ?= $(PREFIX)/share/2048-py/doc
 
 all:
-	@echo Run \'make install\' to install 2048.
+	@echo Run \'make install\' to install 2048-py
+	@echo Run \'make uninstall\' to uninstall 2048-py
 
 install:
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin
@@ -14,4 +15,3 @@ install:
 uninstall:
 	@rm -rf $(DESTDIR)$(PREFIX)/bin/2048-py
 	@rm -rf $(DESTDIR)$(DOCDIR)
-  
