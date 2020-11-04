@@ -18,6 +18,10 @@ If Python complains about `termcolor`, install it with `pip install termcolor`.
 
 Run it online on [Repl.it](https://repl.it/@Ta180m/2048#main.py).
 
+### Install using `pip`
+
+Run `pip install 2048-py`.
+
 ### Get it from the AUR
 
 On Arch Linux, get the `2048-py` package from the AUR.
