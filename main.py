@@ -118,7 +118,7 @@ def print_board():
 		print("|", end='')
 		for j in range(0, cols):
 			if (board[i][j] > 0):
-				print(termcolor.colored("       ", "white", get_color(board[i][j])), end='|')
+				print(termcolor.colored("       ", "grey", get_color(board[i][j])), end='|')
 			else:
 				print("       ", end='|')
 		print()
@@ -126,7 +126,7 @@ def print_board():
 		print("|", end='')
 		for j in range(0, cols):
 			if (board[i][j] > 0):
-				print(termcolor.colored(str(board[i][j]).center(7), "white", get_color(board[i][j])), end='|')
+				print(termcolor.colored(str(board[i][j]).center(7), "grey", get_color(board[i][j])), end='|')
 			else:
 				print("       ", end='|')
 		print()
@@ -134,7 +134,7 @@ def print_board():
 		print("|", end='')
 		for j in range(0, cols):
 			if (board[i][j] > 0):
-				print(termcolor.colored("       ", "white", get_color(board[i][j])), end='|')
+				print(termcolor.colored("       ", "grey", get_color(board[i][j])), end='|')
 			else:
 				print("       ", end='|')
 		print()
