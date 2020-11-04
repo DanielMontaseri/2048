@@ -1,5 +1,15 @@
 #!/usr/bin/python3
 
+
+logo = '''
+      ___   ____  __ __  ____ 
+     |__ \ / __ \/ // / ( __ )
+     __/ // / / / // /_/ __  |
+    / __// /_/ /__  __/ /_/ / 
+   /____/\____/  /_/  \____/  
+	'''
+
+
 # Imports
 import os
 import sys
@@ -13,6 +23,7 @@ TODO:
  - Implement moves
 	- We have a reference implementation
 	- You can also fix/write your own
+	- Replace merge_direction in do_move() with merge_direction_alt
  
  - Fix check_lost()
 
@@ -25,6 +36,8 @@ TODO:
  - Add restart keys
 
  - Add help menu
+
+ - Detect when you win and get 2048
 
  - High scores using Repl.it Database?
 	   or JSON(possibly easier(just file writing))
@@ -101,13 +114,7 @@ def get_color(x):
 
 # Print the board
 def print_board():
-	print('''
-      ___   ____  __ __  ____ 
-     |__ \ / __ \/ // / ( __ )
-     __/ // / / / // /_/ __  |
-    / __// /_/ /__  __/ /_/ / 
-   /____/\____/  /_/  \____/  
-	''')
+	print(logo)
 	print("BY LADUE HS CS CLUB" + ("SCORE: " + str(score) + '\n').rjust(15))
 	for i in range(0, rows):
 		print("-", end='')
