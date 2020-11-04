@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "repl_python3_2048"
-version = "0.1.0"
-description = ""
-authors = ["repl.it user <replituser@example.com>"]
+name = "2048"
+version = "0.1.4"
+description = "2048 written in Python by the Ladue High School Computer Science Club"
+authors = ["Anthony Wang <ta180m@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
