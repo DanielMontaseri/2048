@@ -2,13 +2,18 @@
 name = "2048"
 version = "0.1.4"
 description = "2048 written in Python by the Ladue High School Computer Science Club"
+readme = "README.md"
 authors = ["Anthony Wang <ta180m@gmail.com>"]
+license = "GPLv3"
 
 [tool.poetry.dependencies]
 python = "^3.8"
 termcolor = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
+pytest = "^6.1.1"
+mypy = "^0.790"
+pylint = "^2.6.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
