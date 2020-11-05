@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "2048-py"
-version = "0.1.4-12"
+version = "0.1.5-1"
 description = "2048 written in Python by the Ladue High School Computer Science Club"
 readme = "README.md"
 authors = ["Anthony Wang <ta180m@gmail.com>"]
