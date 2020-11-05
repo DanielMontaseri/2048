@@ -401,7 +401,12 @@ def game():
 	c = sys.stdin.read(1)
 	os.system("stty -raw echo")
 
-		
+
 # Main game loop
-while (True):
-	game() # run the game
+def main()
+    while (True):
+        game() # run the game
+
+
+if __name__ == '__main__':
+    main()
