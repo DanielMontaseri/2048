@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="2048-py",
-    version="0.1.5",
+    version="0.1.5-1",
     author="Anthony Wang",
     author_email="ta180m@gmail.com",
     description="2048 written in Python by the Ladue High School Computer Science Club",

@@ -403,7 +403,7 @@ def game():
 
 
 # Main game loop
-def main()
+def main():
     while (True):
         game() # run the game
 
