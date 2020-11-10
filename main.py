@@ -48,8 +48,8 @@ TODO:
 
 
 # Global variables
-cols = 4
 rows = 4
+cols = 4
 board = [[0]*cols for i in range(rows)] # Initialize an array of size rows x cols with zeroes 
 #[[0]*cols]*rows does not work, all rows have same pointer
 lost = False
@@ -108,7 +108,7 @@ def get_color(x):
 		return "on_blue"
 	elif x == 2048:
 		return "on_magenta"
-	else:
+	else: # you're too good
 		return "on_cyan"
 
 
@@ -318,20 +318,67 @@ def merge_right():
 			board[i][cols-j-1] = abs(l[j])
 
 
-def check_lost():
+def check_lost_alt():
 	#you still need to check if anything is merge-able
 	#it might be best if we have a check mergeability function. check every row and column to see if 2 consecutive elements match.
 	for i in range(0, rows):
 		for j in range(0, cols):
 			if board[i][j] == 0:
 				return False
-
+			elif i > 0 and board[i - 1][j] == board[i][j]:
+				return False
+			elif i < rows and board[i + 1][j] == board[i][j]:
+				return False
+			elif j > 0 and board[i][j - 1] == board[i][j]:
+				return False
+			elif j < cols and board[i][j + 1] == board[i][j]:
+				return False
+    
 	return True
 
+  #check if empty
 
+def check_lost():
+	full = all(map(all,board))
+
+	#check if full
+	if full:
+		#check rows
+		for i in range(0, rows):
+			for j in range(0, cols-1):
+				if board[i][j] == board[i][j+1]:
+					return True 
+		#check cols
+		for i in range(0, rows-1):
+			for j in range(0, cols):
+				if board[i][j] == board[i+1][j]:
+					return True
+	else:
+		return False 
+   
+
+#if board contains value 2048
+def check_win():
+	# check if you won
+  return any([i.count(2048) for i in board])
+	#pass
+
+
+# Wait for keypress
+def wait_key():
+	print("Press any key to continue ...")
+	# Read in keypress using os magic
+	os.system("stty raw -echo")  	
+	c = sys.stdin.read(1)
+	os.system("stty -raw echo")
+
+
+#brief help message (prints) telling player how to play the game (just basic controls, goal)
 def show_help():
 	os.system('clear') 
 	# Print help
+	print("Use your WASD-keys to move the tiles. When two tiles with the same number touch, they merge into one!")
+	wait_key()
 
 
 # Process a keypress
@@ -395,11 +442,7 @@ def game():
 	print_board()
 	print("You lost!")
 
-	print("Press any key to continue ...")
-	# Read in keypress using os magic
-	os.system("stty raw -echo")  	
-	c = sys.stdin.read(1)
-	os.system("stty -raw echo")
+	wait_key()
 
 
 # Main game loop
