@@ -347,12 +347,13 @@ def check_lost():
 		for i in range(0, rows):
 			for j in range(0, cols-1):
 				if board[i][j] == board[i][j+1]:
-					return True 
+					return False 
 		#check cols
 		for i in range(0, rows-1):
 			for j in range(0, cols):
 				if board[i][j] == board[i+1][j]:
-					return True
+					return False
+		return True
 	else:
 		return False 
    
@@ -360,7 +361,7 @@ def check_lost():
 #if board contains value 2048
 def check_win():
 	# check if you won
-  return any([i.count(2048) for i in board])
+  return any(i.count(2048) for i in board)
 	#pass
 
 
@@ -383,11 +384,11 @@ def show_help():
 
 # Process a keypress
 def do_move(c):
-	global lost
-	global score
+	global lost, score
 	# Keypress listener/handler
 
 	#Assuming valid input
+	prev_board=[row.copy() for row in board]
 	if (c == 'w'):
 		merge_up()
 	elif (c == 'a'):
@@ -407,8 +408,9 @@ def do_move(c):
 
 	if check_lost():
 		lost = True
-	
-	if not lost:
+
+	#stop spawn on empty move
+	elif prev_board!=board:
 		spawn_random()
 
 
